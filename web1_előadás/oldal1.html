@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beadandó</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <header>
+        <h1 class="header">Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a class="active" href="oldal1.html">CRUD tábla</a></li>
+            <li><a href="oldal2.html">oldal 2</a></li>
+        </ul>
+    </nav>
+
+    <aside>
+        <h1>CRUD tábla</h1>
+    </aside>
+
+    <main>
+        <form id="crud-form">
+            <input type="text" id="name" placeholder="Név" required>
+            <input type="number" id="age" placeholder="Kor" min="1" max="120" required>
+            <input type="text" id="city" placeholder="Város" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <button type="submit">Mentés</button>
+        </form>
+
+        <input type="text" id="search" placeholder="Keresés...">
+
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortTable('name')">Név</th>
+                    <th onclick="sortTable('age')">Kor</th>
+                    <th onclick="sortTable('city')">Város</th>
+                    <th onclick="sortTable('email')">Email</th>
+                    <th>Műveletek</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Itt jelennek meg a sorok -->
+            </tbody>
+        </table>
+    </main>
+
+    <script src="javasrcipt/tabla.js"></script>
+
+    <footer>
+        Faragó Lajos Bence UZBB3N, Varga Bence OW0PUO
+    </footer>
+</body>
+</html>
