@@ -8,4 +8,4 @@ if( sessionStorage.hits )
     localStorage.hits = Number(localStorage.hits) +1; 
     else 
     localStorage.hits = 1; 
-    document.write("Összes eddigi frissítés száma:" + localStorage.hits );
+    document.writeln("Összes eddigi frissítés száma:" + localStorage.hits );
