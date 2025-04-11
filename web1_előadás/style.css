@@ -93,3 +93,8 @@ p{
     border: 5px solid #333;
     margin-top: 20px;
 }
+
+.content
+{
+    text-align: left;
+}
