@@ -1,143 +1,180 @@
-code="BBBBBBefg456"; 
-url="http://gamf.nhely.hu/ajax2/"; 
-async function read() { 
-  document.getElementById("code").innerHTML="code="+code; 
-  let response = await fetch(url, { 
-      method: 'post', 
-      cache: 'no-cache', 
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded', 
-      }, 
-      body: "code="+code+"&op=read" 
-  }); 
-  let data = await response.text(); 
-  data = JSON.parse(data); 
-  let list = data.list; 
-  // !!! Először String-ben elkészítjük és csak a végén adjuk hozzá a DOM-hoz: divRead.innerHTML=str; 
-  str="<H1>Read</H1>"; 
-  str+="<p>Number of records: "+data.rowCount+"</p>"; 
-  str+="<p>Last max "+data.maxNum+" records:</p>"; 
-  str+="<table><tr><th>id</th><th>name</th><th>city</th><th>phone</th><th>code</th></tr>"; 
-  for(let i=0; i<list.length; i++) 
-    str += 
-"<tr><td>"+list[i].id+"</td><td>"+list[i].name+"</td><td>"+list[i].city+"</td><td>"+list[i].phone+"</td><td>"+list[i].code+"</td></tr>"; 
-  str +="</table>"; 
-  document.getElementById("readDiv").innerHTML=str; 
-}
- 
-async function create(){ 
-  // name: reserved word 
-  nameStr = document.getElementById("name1").value; 
-  city = document.getElementById("city1").value; 
-  phone = document.getElementById("phone1").value; 
-  if(nameStr.length>0 && nameStr.length<=30 && city.length>0 && city.length<=30 && 
-phone.length>0 && phone.length<=30 && code.length<=30){ 
-    let response = await fetch(url, { 
-      method: 'post', 
-      cache: 'no-cache', 
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded', 
-      }, 
-      body: "code="+code+"&op=create&name="+nameStr+"&city="+city+"&phone="+phone 
-    }); 
-    let data = await response.text();  
-    if(data>0) 
-      str="Create successful!"; 
-    else 
-    str="Create NOT successful!"; 
-    document.getElementById("createResult").innerHTML=str; 
-    document.getElementById("name1").value=""; 
-    document.getElementById("city1").value=""; 
-    document.getElementById("phone1").value=""; 
-    read(); 
-  } 
-  else 
-    document.getElementById("hozzaadasResult").innerHTML="Validation error!!"; 
-} 
- 
-async function getDataForId() { 
-  let response = await fetch(url, { 
-      method: 'post', 
-      cache: 'no-cache', 
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded', 
-      }, 
-// A már használt op=read kérés segítségével ki tudjuk nyerni az adott ID-hez tartozó adatokat: 
-      body: "code="+code+"&op=read" 
-  }); 
-  let data = await response.text(); 
-  data = JSON.parse(data); 
-  let list = data.list; 
-  for(let i=0; i<list.length; i++) 
-// kiválasztjuk azt a rekordot, amelyiknek az ID-je megegyezik a megadott ID-vel, 
-// és az datokat beírjuk a beviteli mezőkbe: 
-    if(list[i].id==document.getElementById("idUpd").value){ 
-      document.getElementById("name2").value=list[i].name; 
-      document.getElementById("city2").value=list[i].city; 
-      document.getElementById("phone2").value=list[i].phone; 
-    } 
-} 
- 
-async function update(){ 
-  // name: reserved word 
-  id = document.getElementById("idUpd").value; 
-  nameStr = document.getElementById("name2").value; 
-  city = document.getElementById("city2").value; 
-  phone = document.getElementById("phone2").value; 
-  if(id.length>0 && id.length<=30 && nameStr.length>0 && nameStr.length<=30 && city.length>0 && 
-city.length<=30 && phone.length>0 && phone.length<=30 && code.length<=30){ 
-    let response = await fetch(url, { 
-      method: 'post', 
-      cache: 'no-cache', 
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded', 
-      }, 
-      body: 
-"code="+code+"&op=update&id="+id+"&name="+nameStr+"&city="+city+"&phone="+phone 
-    }); 
-    let data = await response.text();  
-    if(data>0) 
-      str="Update successful!"; 
-    else 
-    str="Update NOT successful!"; 
-    document.getElementById("frissitesResult").innerHTML=str; 
+const url = "http://gamf.nhely.hu/ajax2/";
+const code = "OWUPUOuzb123";
 
-// a végén kiürítjük a beviteli mezőket: 
-    document.getElementById("idUpd").value=""; 
-    document.getElementById("name2").value=""; 
-    document.getElementById("city2").value=""; 
-    document.getElementById("phone2").value=""; 
-    read(); 
-  } 
-  else 
-    document.getElementById("frissitesResult").innerHTML="Validation error!!"; 
-} 
- 
-//delete: resetved word 
-async function deleteF(){ 
-  id = document.getElementById("idDel").value; 
-  if(id.length>0 && id.length<=30){ 
-    let response = await fetch(url, { 
-      method: 'post', 
-      cache: 'no-cache', 
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded', 
-      }, 
-      body: "code="+code+"&op=delete&id="+id 
-    }); 
-    let data = await response.text();  
-    if(data>0) 
-      str="Delete successful!"; 
-    else 
-    str="Delete NOT successful!"; 
-    document.getElementById("torlesResult").innerHTML=str; 
-    document.getElementById("idDel").value=""; 
-    read(); 
-  } 
-  else 
-    document.getElementById("torlesResult").innerHTML="Validation error!!"; 
-} 
- 
-window.onload = function() { 
-    read(); 
-}; 
+document.addEventListener("DOMContentLoaded", () => {
+    loadData();
+    setupForm();
+});
+
+async function sendRequest(params) {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ code, ...params }).toString()
+    });
+
+    if (!response.ok) throw new Error("Szerverhiba!");
+    return await response.json();
+}
+
+async function loadData() {
+    try {
+        const data = await sendRequest({ op: "read" });
+        renderTable(data.list);
+        displayStatus(data.rowCount, data.maxNum);
+    } catch (err) {
+        console.error(err);
+        alert("Nem sikerült betölteni az adatokat!");
+    }
+}
+
+function renderTable(records) {
+    const content = document.querySelector(".mainSect");
+    content.innerHTML = "<h2>Adatok</h2>";
+
+    const table = document.createElement("table");
+    table.innerHTML = `
+        <tr>
+            <th>ID</th>
+            <th>Név</th>
+            <th>Magasság</th>
+            <th>Súly</th>
+            <th>Műveletek</th>
+        </tr>
+    `;
+
+    records.forEach(({ id, name, height, weight }) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${id}</td>
+            <td>${name}</td>
+            <td>${height}</td>
+            <td>${weight}</td>
+            <td>
+                <button data-edit="${id}">Szerkesztés</button>
+                <button data-delete="${id}">Törlés</button>
+            </td>
+        `;
+        table.appendChild(row);
+    });
+
+    content.appendChild(table);
+
+    table.querySelectorAll("[data-edit]").forEach(btn =>
+        btn.addEventListener("click", () => editRecord(btn.dataset.edit))
+    );
+    table.querySelectorAll("[data-delete]").forEach(btn =>
+        btn.addEventListener("click", () => deleteRecord(btn.dataset.delete))
+    );
+}
+
+function displayStatus(rowCount, maxNum) {
+    const container = document.querySelector(".mainSect");
+    let status = document.getElementById("status");
+
+    if (!status) {
+        status = document.createElement("div");
+        status.id = "status";
+        status.style.marginBottom = "10px";
+        container.prepend(status);
+    }
+
+    status.innerHTML = `<p><strong>Rekordok száma:</strong> ${rowCount} / ${maxNum}</p>`;
+}
+
+function setupForm() {
+    const container = document.querySelector("#addUser");
+    const form = document.createElement("form");
+    form.id = "dataForm";
+
+    form.innerHTML = `
+        <input type="hidden" id="recordId">
+        <input type="text" id="name" placeholder="Név" required>
+        <input type="number" id="height" placeholder="Magasság" min="1" required>
+        <input type="number" id="weight" placeholder="Súly" min="1" required>
+        <button type="submit" id="submitBtn">Hozzáadás</button>
+        <button type="button" id="cancelBtn" style="display:none">Mégse</button>
+    `;
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById("recordId").value;
+        const name = document.getElementById("name").value;
+        const height = document.getElementById("height").value;
+        const weight = document.getElementById("weight").value;
+
+        if (id) {
+            await updateRecord({ id, name, height, weight });
+        } else {
+            await createRecord({ name, height, weight });
+        }
+
+        resetForm();
+        await loadData();
+    });
+
+    form.querySelector("#cancelBtn").addEventListener("click", resetForm);
+    container.appendChild(form);
+}
+
+function resetForm() {
+    const form = document.getElementById("dataForm");
+    form.reset();
+    form.recordId.value = "";
+    form.submitBtn.textContent = "Hozzáadás";
+    form.cancelBtn.style.display = "none";
+}
+
+async function editRecord(id) {
+    try {
+        const data = await sendRequest({ op: "read" });
+        const record = data.list.find(item => item.id == id);
+
+        if (record) {
+            const form = document.getElementById("dataForm");
+            form.recordId.value = record.id;
+            form.name.value = record.name;
+            form.height.value = record.height;
+            form.weight.value = record.weight;
+            form.submitBtn.textContent = "Frissítés";
+            form.cancelBtn.style.display = "inline-block";
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Nem sikerült betölteni a rekordot szerkesztéshez!");
+    }
+}
+
+async function createRecord({ name, height, weight }) {
+    try {
+        await sendRequest({ op: "create", name, height, weight });
+        alert("Rekord sikeresen létrehozva!");
+    } catch (err) {
+        console.error(err);
+        alert("Hiba történt létrehozáskor!");
+    }
+}
+
+async function updateRecord({ id, name, height, weight }) {
+    try {
+        await sendRequest({ op: "update", id, name, height, weight });
+        alert("Rekord sikeresen frissítve!");
+    } catch (err) {
+        console.error(err);
+        alert("Hiba történt frissítéskor!");
+    }
+}
+
+async function deleteRecord(id) {
+    if (!confirm("Biztosan törlöd ezt a rekordot?")) return;
+
+    try {
+        await sendRequest({ op: "delete", id });
+        alert("Rekord sikeresen törölve!");
+        await loadData();
+    } catch (err) {
+        console.error(err);
+        alert("Hiba történt törléskor!");
+    }
+}

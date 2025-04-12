@@ -1,12 +1,14 @@
-h1.header{
+h1.header {
     text-align: center;
 }
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     text-align: center;
 }
+
 header {
     background-color: #333;
     color: white;
@@ -14,6 +16,7 @@ header {
     text-align: center;
     width: 100%;
 }
+
 nav ul {
     list-style: none;
     padding: 0;
@@ -23,28 +26,36 @@ nav ul {
     justify-content: left;
     margin: 0;
 }
+
 nav ul li {
     margin: 0 20px;
 }
+
 nav ul li a {
     text-decoration: none;
     color: white;
     padding: 10px 15px;
     display: block;
 }
-nav ul li a.active, nav ul li a.hover {
+
+nav ul li a.active,
+nav ul li a.hover {
     background-color: #666;
 }
+
 aside {
     background-color: #8b7f7f7a;
     padding: 15px;
     margin: 10px;
 }
+
 .content {
     width: 70%;
     padding: 20px;
     margin: 10px;
+    text-align: left;
 }
+
 footer {
     background-color: #333;
     color: white;
@@ -55,14 +66,14 @@ footer {
     bottom: 0;
 }
 
-p{
+p {
     text-align: left;
     margin-left: 20px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
 }
 
-.menu{
+.menu {
     border-style: solid;
     border-top-width: 3px;
     border-left-width: 0px;
@@ -70,8 +81,7 @@ p{
     border-bottom-width: 0px;
 }
 
-#kepkeret
-{
+#kepkeret {
     margin-left: 40px;
     width: 500px;
     height: 500px;
@@ -80,21 +90,201 @@ p{
     float: left;
 }
 
-#mozgathato{
+#mozgathato {
     width: 500px;
     height: 500px;
     float: right;
 }
 
-#canvas
-{
+#canvas {
     width: 500px;
     height: 500px;
     border: 5px solid #333;
     margin-top: 20px;
 }
 
-.content
-{
+/* ------- CRUD CSS Kiegészítés ------- */
+
+form#dataForm {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    display: inline-block;
     text-align: left;
+}
+
+form#dataForm input {
+    margin: 5px 10px 10px 0;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 180px;
+}
+
+form#dataForm button {
+    padding: 8px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form#dataForm button:hover {
+    background-color: #666;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+table th {
+    background-color: #333;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #eaeaea;
+}
+
+button[data-edit], button[data-delete] {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[data-edit] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button[data-delete] {
+    background-color: #f44336;
+    color: white;
+}
+
+button[data-edit]:hover {
+    background-color: #45a049;
+}
+
+button[data-delete]:hover {
+    background-color: #d32f2f;
+}
+
+
+@media screen and (max-width: 768px) {
+    .content, #kepkeret, #mozgathato {
+        width: 100%;
+        float: none;
+    }
+
+    form#dataForm input {
+        width: 90%;
+    }
+}
+
+.mainSect {
+    padding: 20px;
+    background-color: white;
+    width: 80%;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+#status {
+    background-color: #eef;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-left: 5px solid #337ab7;
+    font-size: 16px;
+    text-align: left;
+    border-radius: 4px;
+}
+
+#status strong {
+    color: #2a4d7a;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #333;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #337ab7;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #286090;
+}
+
+#addUser {
+    width: 80%;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+form input, form button {
+    margin: 5px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+form input {
+    width: 180px;
+}
+
+#cancelBtn {
+    background-color: #999;
+}
+
+#cancelBtn:hover {
+    background-color: #666;
 }

@@ -21,43 +21,17 @@
     <aside>
         <h1>AJAX menü</h1>
     </aside>
-    <div class="content">
-        <div id = "code"></div> 
-        <div id = "readDiv"></div> 
-        <div id = "hozzaadDiv"> 
-          <h1>Hozzáadás</h1> 
-          <p>
-            Név (Kötelező, max 30): <input id="name1" type="text"></input><br> 
-            Város (Kötelező, max 30): <input id="city1" type="text"></input><br>
-            Telefonszám (Kötelező, max 30): <input id="phone1" type="text"></input><br> 
-            <button type="submit" onclick="create();">Hozzáadás</button><br> 
-            <div id = "hozzaadasResult"></div> 
-        </p>
-        </div>  
-        <div id = "frissitesDiv"> 
-          <h1>Frissítés</h1> 
-          <p>
-            ID (Kötelező): <input id="idUpd" type="text"></input><br>  
-            Név (Kötelező, max 30): <input id="name2" type="text"></input><br> 
-            Város (Kötelező, max 30): <input id="city2" type="text"></input><br> 
-            Telefonszám (Kötelező, max 30): <input id="phone2" type="text"></input><br> 
-            <button type="submit" onclick="update();">Frissítés</button> 
-            <button type="submit" onclick="getDataForId();">Adatok lekérése</button><br> 
-            <div id = "frissitesResult"></div> 
-          </p>      
-        </div>  
-        <div id = "torlesDiv"> 
-          <h1>Törlés</h1> 
-          <p>
-          ID (Kötelező): <input id="idDel" type="text"></input><br>  
-          <button type="submit" onclick="deleteF();">Törlés</button><br> 
-          <div id = "torlesResult"></div>   
-        </p>    
-        </div>  
-    </div>
-    <footer>
-        Faragó Lajos Bence UZBB3N, Varga Bence OW0PUO
-    </footer>
+
+    <main id="content">
+      <section id="addUser"></section>
+      <section class="mainSect">
+      </section>
+  </main>
+  
+  <footer>
+    Faragó Lajos Bence UZBB3N, Varga Bence OW0PUO
+</footer>
+
     <script src="/web1_előadás/AJAXmenu/ajax.js"></script>
 </body>
 </html>
