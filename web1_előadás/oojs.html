@@ -17,23 +17,24 @@
             <li><a href="/web1_előadás/html5menu/ws.html">HTML 5 menü</a></li>
             <li><a href="/web1_előadás/chartjs.html">ChartJS</a></li>
             <li><a href="AJAXmenu/ajax.html">AJAX menü</a></li>
-            <li><a href="/web1_előadás/oojs.html">OOJS menü</a></li>
+            <li><a class="active" href="/web1_előadás/oojs.html">OOJS menü</a></li>
         </ul>
     </nav>
     <aside>
-        <h1>Főoldal</h1>
+        <h1>OOJS menü</h1>
     </aside>
-    <div class="content">
-        <article>
-            <p></p>
-        </article>
-        <article>
-            <p></p>
-        </article>
+    <div class="oojscontent">
+        <h2>Napi teendők listája</h2>
+        <input type="text" id="taskInput" placeholder="Írd be a feladatot">
+        <button id="addTask">Feladat hozzáadás</button>
+        <button id="addImportantTask">Fontos feladat hozzáadása</button>
+      
+        <div id="taskContainer"></div>
     </div>
    
     <footer>
         Faragó Lajos Bence UZBB3N, Varga Bence OW0PUO
     </footer>
+    <script src="/web1_előadás/javasrcipt/oojs.js"></script>
 </body>
 </html>
