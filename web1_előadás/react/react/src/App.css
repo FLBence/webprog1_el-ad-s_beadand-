@@ -1,0 +1,83 @@
+/* Alap stílusok az egész alkalmazás számára */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f3f4f6;
+}
+
+/* Középre helyezi a játék területét */
+.text-center {
+  text-align: center;
+}
+
+/* A játéktábla négyzet alakú */
+.inline-grid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #333;
+  background-color: #e5e7eb;
+  margin: 0 auto;
+}
+
+/* A mezők alap stílusa */
+.inline-grid div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d1d5db; /* szürke vonal */
+  transition: background-color 0.3s ease;
+}
+
+/* A kígyó színének beállítása */
+.bg-green-600 {
+  background-color: #16a34a; /* Kígyó zöld */
+  border-radius: 50%;
+}
+
+/* A kaja színének beállítása */
+.bg-red-500 {
+  background-color: #ef4444; /* Kaja piros */
+  border-radius: 50%;
+}
+
+/* Game over üzenet */
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.text-red-600 {
+  color: #dc2626; /* Game over piros */
+  font-size: 1.5rem;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.bg-blue-500 {
+  background-color: #3b82f6; /* Újraindítás gomb */
+}
+
+.rounded {
+  border-radius: 0.375rem; /* lekerekített sarkok */
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+/* A gomb hover hatásai */
+button:hover {
+  background-color: #2563eb; /* Kék szín hover hatás */
+}
