@@ -1,11 +1,27 @@
-var canvas =  document.getElementById("canvas"); 
-if (canvas.getContext)
-{
-    var ctx = canvas.getContext('2d');
-    ctx.fillRect(25, 25, 250, 100);
-    ctx.clearRect(45, 45, 210, 60); 
-    ctx.strokeRect(50,50,200,50); 
-}
-else {
-    alert("A canvas nem támogatott");
-}
+const vaszon = document.getElementById('vaszon');
+    const ctx = vaszon.getContext('2d');
+
+    let x = 50;
+    let y = 150;
+    let radius = 30;
+    let dx = 2;
+
+    function rajzol() {
+      ctx.clearRect(0, 0, vaszon.width, vaszon.height);
+
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'tomato';
+      ctx.fill();
+      ctx.closePath();
+
+      x += dx;
+
+      if (x + radius > vaszon.width || x - radius < 0) {
+        dx = -dx;
+      }
+
+      requestAnimationFrame(rajzol);
+    }
+
+    rajzol();

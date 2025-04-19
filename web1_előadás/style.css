@@ -96,12 +96,12 @@ p {
     float: right;
 }
 
-#canvasid {
-    width: 500px;
-    height: 500px;
-    border: 5px solid #333;
-    margin-top: 20px;
-}
+canvas {
+    display: block;
+    margin: 0 auto;
+    background-color: #eee;
+  }
+
 #chartcontent
 {
     width: 70%;
@@ -144,7 +144,6 @@ p {
     margin-left: 5px;
   }
 
-/* ------- CRUD CSS Kiegészítés ------- */
 
 form#dataForm {
     margin: 20px 0;
