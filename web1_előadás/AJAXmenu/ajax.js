@@ -1,150 +1,96 @@
 const apiUrl = "http://gamf.nhely.hu/ajax2/";
 const code = "OWUPUOuzb123"; 
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadData();
-  document.getElementById("createBtn").addEventListener("click", createRecord);
-  document.getElementById("updateBtn").addEventListener("click", updateRecord);
-  document.getElementById("deleteBtn").addEventListener("click", deleteRecord);
-  document.getElementById("getByIdBtn").addEventListener("click", getDataById);
-});
+const $ = id => document.getElementById(id);
 
-function sendRequest(params) {
-  return fetch(apiUrl, {
+const postData = data =>
+  fetch(apiUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ code, ...params }).toString()
-  }).then(res => {
-    if (!res.ok) throw new Error("Hálózati hiba!");
-    return res.json();
+    body: new URLSearchParams({ ...data, code: code })
   });
-}
 
-function showMessage(msg, isError = false) {
-  const fb = document.getElementById("feedback");
-  fb.textContent = msg;
-  fb.className = isError ? "msg error" : "msg";
-}
+const validateInputs = (...inputs) =>
+  inputs.every(i => i.trim() !== "" && i.length <= 30);
 
-function validateInput(name) {
-  if (!name || name.trim() === "") {
-    showMessage("A név mező nem lehet üres!", true);
-    return false;
-  }
-  if (name.length > 30) {
-    showMessage("A név túl hosszú! (max 30 karakter)", true);
-    return false;
-  }
-  return true;
-}
+function readData() {
+  postData({ op: "read" })
+    .then(res => res.json())
+    .then(data => {
+      const container = $("data");
+      container.innerHTML = "";
+      const heights = data.list.map(item => {
+        container.innerHTML += `ID: ${item.id}, Név: ${item.name}, Magasság: ${item.height}, Súly: ${item.weight}<br>`;
+        return parseInt(item.height);
+      });
 
-async function loadData() {
-  try {
-    const res = await sendRequest({ op: "read" });
-    renderData(res.list);
-    renderHeightStats(res.list);
-  } catch (err) {
-    showMessage("Nem sikerült betölteni az adatokat!", true);
-  }
-}
-
-function renderData(data) {
-    const tableBody = document.getElementById("dataList");
-    tableBody.innerHTML = "";
-  
-    data.forEach(item => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${item.id}</td>
-        <td>${item.name}</td>
-        <td>${item.height}</td>
-        <td>${item.weight}</td>
-      `;
-      tableBody.appendChild(tr);
+      const sum = heights.reduce((a, b) => a + b, 0);
+      const avg = sum / heights.length;
+      const max = Math.max(...heights);
+      $("stat").innerHTML = `<br>Magasságok összege: ${sum}, átlaga: ${avg.toFixed(2)}, legnagyobb: ${max}`;
     });
-  }
-
-  function renderHeightStats(data) {
-    if (!data.length) return;
-  
-    const heightSum = data.reduce((sum, item) => sum + Number(item.height), 0);
-    const maxHeight = Math.max(...data.map(item => Number(item.height)));
-    const avgHeight = (heightSum / data.length).toFixed(2);
-  
-    const statsEl = document.getElementById("heightStats");
-    statsEl.innerHTML = `
-      <strong>Magasság statisztika</strong><br>
-      Összeg: ${heightSum}, Átlag: ${avgHeight}, Legnagyobb: ${maxHeight}
-    `;
-  }
-
-async function createRecord() {
-  const name = document.getElementById("name").value;
-  const height = document.getElementById("height").value;
-  const weight = document.getElementById("weight").value;
-
-  if (!validateInput(name)) return;
-
-  try {
-    await sendRequest({ op: "create", name, height, weight });
-    showMessage("Sikeresen hozzáadva!");
-    loadData();
-  } catch {
-    showMessage("Hiba történt létrehozáskor!", true);
-  }
 }
 
-async function updateRecord() {
-  const id = document.getElementById("id").value;
-  const name = document.getElementById("name").value;
-  const height = document.getElementById("height").value;
-  const weight = document.getElementById("weight").value;
+function createData() {
+  const name = $("createName").value;
+  const height = $("createHeight").value;
+  const weight = $("createWeight").value;
 
-  if (!id || !validateInput(name)) return;
-
-  try {
-    await sendRequest({ op: "update", id, name, height, weight });
-    showMessage("Sikeres frissítés!");
-    loadData();
-  } catch {
-    showMessage("Hiba frissítéskor!", true);
-  }
-}
-
-async function deleteRecord() {
-  const id = document.getElementById("id").value;
-  if (!id) {
-    showMessage("Adj meg ID-t a törléshez!", true);
+  if (!validateInputs(name, height, weight)) {
+    $("createMsg").innerText = "Hiba! Nem jó a bevitel!";
     return;
   }
 
-  if (!confirm("Biztosan törlöd ezt a rekordot?")) return;
-
-  try {
-    await sendRequest({ op: "delete", id });
-    showMessage("Sikeres törlés!");
-    loadData();
-  } catch {
-    showMessage("Hiba történt törléskor!", true);
-  }
+  postData({ op: "create", name, height, weight })
+    .then(res => res.text())
+    .then(result => {
+      $("createMsg").innerText = `Válasz: ${result}`;
+      readData();
+    });
 }
 
-async function getDataById() {
-  const id = document.getElementById("id").value;
-  if (!id) return showMessage("Adj meg egy ID-t!", true);
+function getDataForId() {
+  const id = $("updateId").value;
 
-  try {
-    const res = await sendRequest({ op: "read" });
-    const record = res.list.find(r => r.id == id);
+  postData({ op: "read" })
+    .then(res => res.json())
+    .then(data => {
+      const item = data.list.find(i => i.id.toString() === id);
+      if (item) {
+        $("updateName").value = item.name;
+        $("updateHeight").value = item.height;
+        $("updateWeight").value = item.weight;
+      } else {
+        alert("Nincs ilyen ID!");
+      }
+    });
+}
 
-    if (!record) return showMessage("Nincs ilyen ID!", true);
+function updateData() {
+  const id = $("updateId").value;
+  const name = $("updateName").value;
+  const height = $("updateHeight").value;
+  const weight = $("updateWeight").value;
 
-    document.getElementById("name").value = record.name;
-    document.getElementById("height").value = record.height;
-    document.getElementById("weight").value = record.weight;
-
-    showMessage("Adatok betöltve módosításhoz.");
-  } catch {
-    showMessage("Hiba történt lekérdezéskor!", true);
+  if (!validateInputs(name, height, weight)) {
+    $("updateMsg").innerText = "Hiba! Nem jó a bevitel!";
+    return;
   }
+
+  postData({ op: "update", id, name, height, weight })
+    .then(res => res.text())
+    .then(result => {
+      $("updateMsg").innerText = `Válasz: ${result}`;
+      readData();
+    });
+}
+
+function deleteData() {
+  const id = $("deleteId").value;
+
+  postData({ op: "delete", id })
+    .then(res => res.text())
+    .then(result => {
+      $("deleteMsg").innerText = `Válasz: ${result}`;
+      readData();
+    });
 }
