@@ -32,10 +32,37 @@
             <li><a href="../html5menu/svg.html">SVG</a></li>
         </ul>
     </nav>
-    <button onclick="BLoop()">Loop</button>
-    <button onclick="Hello()">Hello</button>
+    <button onclick="startWorker()">Számolj faktoriálist</button>
+  <p id="result">Eredmény: </p>
+
+  <script>
+    let worker;
+
+    function startWorker() {
+      if (window.Worker) {
+        if (!worker) {
+          worker = new Worker('java/ww.js');
+        }
+
+        const number = 10;
+        worker.postMessage(number);
+
+        worker.onmessage = function(e) {
+          document.getElementById("result").textContent = "Eredmény: " + e.data;
+        };
+
+        worker.onerror = function(error) {
+          console.error("Hiba a workerben:", error);
+        };
+      } else {
+        alert("A böngésződ nem támogatja a Web Worker-eket.");
+      }
+    }
+  </script>
     <footer>
         Faragó Lajos Bence UZBB3N, Varga Bence OW0PUO
     </footer>
-    <script src="../html5menu/java/ww.js"></script>
 </body>
+
+
+

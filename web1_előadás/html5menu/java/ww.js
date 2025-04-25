@@ -1,8 +1,8 @@
-function BLoop(){ 
-    for (var i = 0; i <= 10000000; i += 1)   
-    var j = i; 
-    alert("A ciklus " + j + " alkalommal lefutott"); 
-    } 
-    function Hello(){ 
-    alert("Hello" ); 
-    } 
+self.onmessage = function(e) {
+    const num = e.data;
+    let result = 1;
+    for (let i = 2; i <= num; i++) {
+      result *= i;
+    }
+    self.postMessage(result);
+  };
